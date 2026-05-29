@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF - 8" />
+    <meta http-equiv="X - UA - Compatible" content="IE = edge" />
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1 class="hifine">I am h1</h1>
+    <h1>I am another</h1>
+    <h2>I am h2</h2>
+    <h3>I am h3</h3>
+    <div id="unique">
+      <p class="para" style="color: rgb(0, 255, 55);">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet inventore
+        adipisci dignissimos voluptatibus ad debitis vel natus nobis? Doloribus
+        fugit vitae veritatis esse! Cumque odio quasi sapiente quisquam est!
+        Odio!
+      </p>
+      <p class="para" style="display: none;">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet inventore
+        adipisci dignissimos voluptatibus ad debitis vel natus nobis? Doloribus
+        fugit vitae veritatis esse! Cumque odio quasi sapiente quisquam est!
+        Odio!
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet inventore
+        adipisci dignissimos voluptatibus ad debitis vel natus nobis? Doloribus
+        fugit vitae veritatis esse! Cumque odio quasi sapiente quisquam est!
+        Odio!
+      </p>
+    </div>
+    <input type="text" />
+    <input type="password" />
+    <input type="text" id="special" />
+    <button>click</button>
+    <div>
+      <div>
+        <p>yolo</p>
+      </div>
+    </div>
+
+    <script>
+      //to get first ele that matches the selector
+      const h1 = document.querySelector("h1");
+      console.log(h1);
+
+      //to get all ele that matches the selector, it return a nodelist
+      //exhibits properties like array length, indexing, foreach
+      const allH1 = document.querySelectorAll("h1");
+      console.log(allH1);
+      console.log(allH1[0]);
+
+      //attribute selector
+      const inputPassword = document.querySelector("input[type = 'password']");
+      console.log(inputPassword);
+
+      //id selector
+      const inputText = document.getElementById("special");
+      console.log(inputText);
+
+      //class selector
+      //it returns an html collection, not a nodelist
+      //exhibits properties like array length, indexing
+      const paras = document.getElementsByClassName("para");
+      console.log(paras);
+      console.log(paras[1]);
+
+      // a way to convert these nodelist/html collection to array
+      const allH1Array = Array.from(allH1);
+      console.log(allH1Array);
+
+      //*********reading elements**********/
+        const div = document.getElementById("unique");
+        //innerHTML -> returns the html content of the element
+        console.log(div.innerHTML);
+        //innerText -> returns the text content of the element and takes care of styling
+        console.log(div.innerText);
+        //textContent -> returns the text content of the element
+        console.log(div.textContent);
+
+        //******styling elements**********/
+        div.style.backgroundColor = "red";
+        div.children[2].style.color="white";
+
+        //*********reading attributes**********/
+        const idName = div.getAttribute("id");
+        console.log(idName);
+
+        const input = document.getElementById("special");
+        const type = input.getAttribute("type");
+        console.log(type);
+        input.setAttribute("type", "email");
+        const updatedtype = input.getAttribute("type");
+        console.log(updatedtype);
+
+
+
+
+    </script>
+  </body>
+</html>
