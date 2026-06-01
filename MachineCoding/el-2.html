@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 400px;
+            height: 400px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <input type="text" />
+    <script>
+        let box = document.querySelector('.box');
+        //inline
+        // box.onclick = function(){
+        //     console.log('box clicked');
+        // }
+
+        // box.onclick = function(){
+        //     console.log('box clicked again');
+        // }
+
+        //addEventListener -> multiple cb can be registered on a single event
+        // box.addEventListener('click',function(){
+        //     console.log('box clicked');
+        // }, {once:true})
+
+        // box.addEventListener('click',function(){
+        //     console.log('box clicked again');
+        // })
+
+        // box.addEventListener('click',function(){
+        //     console.log('box clicked again 3rd time');
+        // })
+
+        //MOUSE EVENTS
+        // mouse -> hover, click(mouse down+ mouse up), mouse down , mouse up , scroll , double-click
+        //hw -> mouseenter, mouseout , mouseleave, scroll
+        // hover-> mouseover
+        // box.addEventListener("mouseover",function(){
+        //     console.log("hover occurred");
+        // });
+
+        // box.addEventListener("mouseleave",function(){
+        //     console.log("mouseleave occurred");
+        // });
+
+        // box.addEventListener('click',function(){
+        //     console.log('box clicked');
+        // })
+
+        // box.addEventListener('mouseup',function(){
+        //     console.log('mouseup occurred');
+        // })
+
+        // box.addEventListener('mousedown',function(){
+        //     console.log('mousedown occurred');
+        // })
+
+        // box.addEventListener('dblclick',function(){
+        //     console.log('dblclick occurred');
+        // })
+
+        // KEYBOARD EVENTS
+        // keyboard -> keyup, keydown, keypress(keydown + keyup)
+
+        let input = document.querySelector('input');
+
+        input.addEventListener('keydown',function(){
+            console.log('keydown occurred');
+        })
+
+        input.addEventListener('keyup',function(){
+            console.log('keyup occurred');
+        })
+
+        input.addEventListener('keypress',function(e){
+            console.log('keypress occurred',e.key);
+        })
+
+
+    </script>
+</body>
+</html>
