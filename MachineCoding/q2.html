@@ -1,0 +1,49 @@
+<!-- question:
+
+You're creating an online shopping website with a list of products.
+Implement the Add to Cart button by only adding a single event listener to achieve it -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF - 8" />
+    <meta http-equiv="X - UA - Compatible" content="IE = edge" />
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="productList">
+      <div class="product">
+        <h3>Product 1</h3>
+        <p>Price: $10</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="product">
+        <h3>Product 2</h3>
+        <p>Price: $20</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="product">
+        <h3>Product 3</h3>
+        <p>Price: $30</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+    <script>
+      const productList = document.getElementById("productList");
+      productList.addEventListener("click", function (e) {
+        // console.log(e.target); // the element on which event occured
+        // console.log(e.currentTarget); //the element on which event listener is attached
+
+        const product = e.target;
+        if (product.getAttribute("class") === "add-to-cart") {
+          const parentProduct = product.parentElement;
+          const price = parentProduct.children[1].textContent.split(" ")[1];
+          const name = parentProduct.children[0].textContent;
+          console.log(`Product ${name} added to cart with price ${price}`);
+        }
+      });
+    </script>
+  </body>
+</html>

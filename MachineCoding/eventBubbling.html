@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF - 8">
+    <meta http-equiv="X - UA - Compatible" content="IE = edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <title>Document</title>
+    <style>
+        div[id] {
+
+            border: 1px solid red;
+        }
+
+        #outer_box {
+            height: 10rem;
+            width: 10rem;
+            background-color: lightblue;
+        }
+
+        #inner_box {
+            height: 50%;
+            width: 50%;
+            background-color: lightgreen;
+            margin-top: 10px;
+        }
+
+        #button {
+            margin-top: 3px;
+            background-color: lightsalmon;
+            width: 50%;
+            margin-left: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Event Bubbling</h1>
+    <div id="outer_box">
+        <div id="inner_box">
+            <div id="button">Click Me </div>
+        </div>
+    </div>
+
+    <script>
+        const outerBox = document.getElementById("outer_box");
+        const innerBox = document.getElementById("inner_box");
+        const button = document.getElementById("button");
+
+        button.addEventListener("click", function(e){
+            console.log("button was clicked");
+            // console.log("e.target", e.target);
+            // console.log("e.currentTarget", e.currentTarget);
+            
+        })
+
+        innerBox.addEventListener("click", function(e){
+            console.log("inner box was clicked");
+            // console.log("e.target", e.target);
+            // console.log("e.currentTarget", e.currentTarget);
+            //This function prevents further propagation of the current event bubbling.
+            e.stopPropagation();
+            //this function prevents further propagation of the current event and all its handlers event if multiple listeners are attached to ele
+            e.stopImmediatePropagation();
+        })
+
+        innerBox.addEventListener("click", function(e){
+            console.log("inner box was clicked again");
+        })
+
+
+        outerBox.addEventListener("click", function(e){
+            console.log("outer box was clicked");
+            // console.log("e.target", e.target);
+            // console.log("e.currentTarget", e.currentTarget);
+        })
+
+        document.addEventListener("click", function(e){
+            console.log("document was clicked");
+            // console.log("e.target", e.target);
+            // console.log("e.currentTarget", e.currentTarget);
+        })
+
+
+    </script>
+</body>
+
+</html>
