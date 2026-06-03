@@ -1,0 +1,37 @@
+<!-- events
+1. click 
+    give the rating
+    update the star to that level
+    update the counting
+2. mouseover
+    change stars to that level to yellow
+3. mouseleave
+    star should turn back to grey -->
+
+    <!-- html structure , add css , add js -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Rating</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        <div class="container">
+            <h1>Star Rating</h1>
+            <div class="star_container">
+                <div class="star" idx="1">&#9733;</div>
+                <div class="star" idx="2">&#9733;</div>
+                <div class="star" idx="3">&#9733;</div>
+                <div class="star" idx="4">&#9733;</div>
+                <div class="star" idx="5">&#9733;</div>
+                
+            </div>
+            <h2>Rating count: <span id="count">0</span></h2>
+        </div>
+        <script src="./index.js"></script>
+</body>
+</html>
