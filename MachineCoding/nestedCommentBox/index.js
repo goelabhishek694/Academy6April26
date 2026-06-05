@@ -12,11 +12,20 @@ container.addEventListener("click", function(e){
         commentCard.classList.add("comment-reply-container");
         commentCard.innerHTML= `<input type="text" placeholder="write your comment"/>
           <button class="btn-submit">submit</button>`;
-        container.appendChild(commentCard);
+        ele.parentNode.parentNode.appendChild(commentCard);
     }
     //if click happens on btn-submit
     if(isSubmit){
-        console.log("submit clicked");
+        const commentContainer = document.createElement("div");
+        commentContainer.classList.add("comment-container");
+        const inputValue = ele.parentNode.children[0].value;
+        commentContainer.innerHTML = `<div class="comment-card">
+          <h3>${inputValue}</h3>
+          <div class="reply">Reply</div>
+        </div>` 
+        const commentReplyBox = ele.parentNode;
+        const commentCard = commentReplyBox.parentNode;
+        commentCard.replaceChild(commentContainer, commentReplyBox);
     }
     //ignore for all other click event
     return;

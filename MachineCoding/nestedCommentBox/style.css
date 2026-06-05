@@ -29,6 +29,6 @@
   } */
 
 /* select all the children of comment container and except th first. then appply styling  */
-.comment-container > *:not(:first-child) {
+.comment-container:not(:first-child) {
     margin-left: 4rem;
 }
