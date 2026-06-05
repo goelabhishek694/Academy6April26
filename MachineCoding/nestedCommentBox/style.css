@@ -1,0 +1,34 @@
+.container{
+    padding: 1rem 3rem;
+}
+
+.comment-container{
+    padding-left: 1rem;
+    padding-top: 1rem;
+    border-left: 1px solid #ccc;
+}
+
+.reply{
+    color:red;
+    padding-left: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* .comment-reply-container{
+    margin-left: 4rem;
+} */
+
+/* .comment-sub-container{
+    margin-left: 4rem;
+} */
+
+/* except comment-container as the first child of it's parent container apply styling to all other children of container  */
+/* .comment-container:not(:first-child) {
+    margin-left: 4rem;
+  } */
+
+/* select all the children of comment container and except th first. then appply styling  */
+.comment-container > *:not(:first-child) {
+    margin-left: 4rem;
+}
