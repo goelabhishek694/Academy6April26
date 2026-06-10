@@ -20,7 +20,7 @@ const handleSuggestion = async(e) => {
     populateSuggestionBox(countryNameArr);
 }
 
-inputBox.addEventListener("input", handleSuggestion);
+inputBox.addEventListener("input", debounce(handleSuggestion));
 
 const populateSuggestionBox = (countryNameArr) => {
     if(countryNameArr.length > 0){
@@ -41,6 +41,21 @@ const populateSuggestionBox = (countryNameArr) => {
     suggestionBox.appendChild(fragment);
 
 }
+
+function debounce(fn, delay=1000){
+    let timerId;
+    return function (...args){
+        if(timerId){
+            console.log("i am resetting you , now wait again from the start");
+            clearTimeout(timerId);
+        }
+        timerId = setTimeout(() => {
+            fn(...args);
+        }, delay);
+    }
+}
+
+
 
 
 
