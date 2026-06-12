@@ -1,0 +1,129 @@
+:root{
+    --pink: lightpink;
+    --blue: lightblue;
+    --purple: rgb(199, 131, 231);
+    --green: lightgreen;
+    --light: white;
+}
+
+html{
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html,
+body {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+.pink{
+    background-color: var(--pink);
+}
+
+.blue{
+    background-color: var(--blue);
+}
+
+.purple{
+    background-color: var(--purple);
+}
+
+.green{
+    background-color: var(--green);
+}
+
+.toolbox_cont{
+    height: 5rem;
+    background-color:black;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toolbox_priority_cont{
+    height: 60%;
+    background-color: #ecf0f1;
+    width:18rem;
+    margin-left: 5rem;
+    display:flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.color{
+    height: 1.5rem;
+    width: 3rem;
+}
+
+.action_btn_cont{
+    height: 60%;
+    background-color: var(--light);
+    width:10rem;
+    margin-right: 12rem ;
+    display:flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.add_btn,
+.delete_btn{
+    font-size: 1.75rem;
+}
+
+.main_cont{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.ticket_cont{
+    height:10rem;
+    width:15rem;
+    background-color:#ecf0f1;
+    position: relative;
+}
+
+.ticket_color{
+    height: 10%;
+}
+
+.ticket_id{
+    height: 7.5%;
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding-left: 10px;
+}
+
+.ticket_area{
+    height: 75%;
+    font-size: 1.5rem;
+    padding-left: 5px;
+}
+
+.lock_unlock{
+    height: 7.5%;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+/* .modal_cont{
+
+} */
+
