@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Storage Example</title>
+</head>
+<body>
+    <h2>Local Storage Example</h2>
+    
+    <script>
+        //create
+        localStorage.setItem("name","John");
+        //read 
+        const name =localStorage.getItem("name");
+        console.log(name);
+        //update
+        localStorage.setItem("name","John Doe");
+        //delete
+        localStorage.removeItem("name");
+        //clear all keys
+        localStorage.clear();
+
+        let colorArray = ["red","blue","green","yellow"];
+        localStorage.setItem("colors",JSON.stringify(colorArray));
+        const colors = JSON.parse(localStorage.getItem("colors"));
+        console.log(colors);
+        console.log(colors[1]);
+        console.log(typeof colors);
+        
+         
+
+        
+
+    </script>
+</body>
+</html>
