@@ -12,9 +12,15 @@
     <div id="root"></div>
     <script type="text/babel">
         const rootElement = document.getElementById('root');
-        
+        function Greeting(props){
+            return `Hello via React my name is ${props.name}`;
+        }
         function App(){
-            return <h1 style={{color:'blue'}}>Hello via React</h1>
+            return <div>
+            <Greeting name="Arul"/>
+            <Greeting name="Priya"/>
+            <Greeting name="Abhinav"/>
+                </div>
         }
         
         ReactDOM.render(<App/>, rootElement);
