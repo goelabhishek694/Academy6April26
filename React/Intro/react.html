@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- provides the framework for creating components, manage them and it defines the structure and behaviour of comp.  -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- handles the rendering of components into the DOM.it also manages updates to DOM when react makes some changes. -->
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        const rootElement = document.getElementById('root');
+        //create an elemtn using react.createElement
+        // 1. the tag name of the HTML ele to create
+        // 2. the properties of the element(attributes, events, etc.)
+        // 3. the children of the element(text, other elements, etc.)
+
+        // props in react are similar to attributes in html 
+        const headingElement = React.createElement('h1', {style:{color:'blue'}}, "Hello via React");
+        // div-> h1+p
+
+        // render the element to the DOM using ReactDOM
+        // ReactDOM.render 
+        // 1. the react element to render
+        // 2. the dom ele where the react ele should be mounted. 
+        ReactDOM.render(headingElement, rootElement);
+
+    </script>
+
+</body>
+</html>
