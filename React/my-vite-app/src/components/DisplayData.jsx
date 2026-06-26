@@ -8,14 +8,14 @@ function DisplayData(props) {
       {/* rendering an array os ok */}
       {/* <h2>{props.fruits}</h2> */}
       <ul>
-        {props.fruits.map(fruit => <li>{fruit}</li>)}
+        {props.fruits.map((fruit,idx) => <li key={idx}>{fruit}</li>)}
       </ul>
       {/* objects cannot be rendered like this in react.  */}
       <h2>{props.person.name}</h2>
       <h2>{props.person.age}</h2>
       <p>
         {/* [name,age] */}
-        {Object.keys(props.person).map(key=> <h2>{key}:{props.person[key]}</h2>)}
+        {Object.keys(props.person).map((key,idx)=> <h2 key={idx}>{key}:{props.person[key]}</h2>)}
       </p>
       <div>
         <h1></h1>

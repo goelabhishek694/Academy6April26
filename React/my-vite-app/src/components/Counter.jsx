@@ -5,20 +5,25 @@
 
 import React, {useState} from 'react'
 
-function Counter(props) {
-    const [count, setCount] = useState(props.initialCount);
+function Counter({initialCount}) {
+    // useState is a func/hook which we call with a initial value. it returns us an array with 2 ele. the first ele is the currentValue of the state and 2nd ele is a function used to update the value of state. 
+    const [count, setCount] = useState(initialCount);
     
     const handleIncrement = () => {
         console.log("Increment");
         setCount(count+1);
-
     }
     const handleDecrement = () => {
         console.log("Decrement");
-        setCount(count-1);
+        if(count>0){
+            setCount(count-1);
+        }else{
+            alert("Count cannot be negative");
+        }
     }
     const handleReset = () => {
         console.log("Reset");
+        setCount(initialCount);
     }
   return (
     <div>

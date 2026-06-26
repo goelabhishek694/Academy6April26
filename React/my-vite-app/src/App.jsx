@@ -4,6 +4,9 @@ import DisplayData from "./components/DisplayData";
 import ConditionalRendering from "./components/ConditionalRendering";
 import EventHandling from "./components/EventHandling";
 import Counter from "./components/Counter";
+import UserCard from "./components/UserCard";
+import ProductList from "./components/ProductList";
+import Todo from "./components/Todo";
 function App() {
   // const fruits = [<li>Apple</li>, <li>Banana</li>, <li>Cherry</li>, <li>Pineapple</li>, <li>Mango</li>];
   const fruits = ["Apple", "Banana", "Cherry", "Pineapple", "Mango"];
@@ -11,6 +14,14 @@ function App() {
     name: "Susheel",
     age: 24,
   };
+
+  const products = [
+    {name: "Product 1", price: 100},
+    {name: "Product 2", price: 200},
+    {name: "Product 3", price: 300},
+    {name: "Product 4", price: 400},
+    {name: "Product 5", price: 500},
+  ]
   //a component can only return one parent element .
   return (
     <>
@@ -28,6 +39,12 @@ function App() {
       <EventHandling />
 
       <Counter initialCount={0} />
+
+      <UserCard name="Susheel" email="susheel@gmail.com" age={24} location="India" picture="https://placehold.co/600x400/orange/white" />
+
+      <ProductList products={products}/>
+
+      <Todo/>
     </>
   );
 }
