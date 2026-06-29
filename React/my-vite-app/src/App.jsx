@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState } from "react";
 import MyComponent from "./components/MyComponent";
 import DisplayData from "./components/DisplayData";
 import ConditionalRendering from "./components/ConditionalRendering";
@@ -7,6 +8,9 @@ import Counter from "./components/Counter";
 import UserCard from "./components/UserCard";
 import ProductList from "./components/ProductList";
 import Todo from "./components/Todo";
+import FormHandling from "./components/FormHandling";
+import TemperatureInput from "./components/TemperatureInput";
+import TemperatureDisplay from "./components/TemperatureDisplay";
 function App() {
   // const fruits = [<li>Apple</li>, <li>Banana</li>, <li>Cherry</li>, <li>Pineapple</li>, <li>Mango</li>];
   const fruits = ["Apple", "Banana", "Cherry", "Pineapple", "Mango"];
@@ -22,10 +26,16 @@ function App() {
     {name: "Product 4", price: 400},
     {name: "Product 5", price: 500},
   ]
+
+  const [temperature, setTemperature] = useState(32);
+
+  const handleTempChange = (newTemp) => {
+    setTemperature(newTemp);
+  }
   //a component can only return one parent element .
   return (
     <>
-      <MyComponent name="Arul" />
+      {/* <MyComponent name="Arul" />
       <MyComponent name="Priya" />
       <MyComponent name="Abhinav" />
       <MyComponent />
@@ -45,6 +55,10 @@ function App() {
       <ProductList products={products}/>
 
       <Todo/>
+      <FormHandling/> */}
+
+      <TemperatureInput temp = {temperature} tempChange = {handleTempChange}/>
+      <TemperatureDisplay temp = {temperature}/>
     </>
   );
 }

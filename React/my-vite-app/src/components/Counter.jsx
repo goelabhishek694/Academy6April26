@@ -11,7 +11,15 @@ function Counter({initialCount}) {
     
     const handleIncrement = () => {
         console.log("Increment");
-        setCount(count+1);
+        //count values is captured during the current render. 
+        // react sees multiple updates, it batches the the update . 
+        setCount(count+1); //setCount(1)
+        setCount(count+1); //setCount(1)
+        setCount(count+1); //setCount(1)
+        setCount(count+1); //setCount(1)
+        // get the latest state , and increment 1 to it . 
+        setCount(count=> count+1);
+        setCount(count=> count+1);
     }
     const handleDecrement = () => {
         console.log("Decrement");
