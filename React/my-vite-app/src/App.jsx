@@ -11,6 +11,7 @@ import Todo from "./components/Todo";
 import FormHandling from "./components/FormHandling";
 import TemperatureInput from "./components/TemperatureInput";
 import TemperatureDisplay from "./components/TemperatureDisplay";
+import UseEffect1 from "./components/useEffectHook/UseEffect1";
 function App() {
   // const fruits = [<li>Apple</li>, <li>Banana</li>, <li>Cherry</li>, <li>Pineapple</li>, <li>Mango</li>];
   const fruits = ["Apple", "Banana", "Cherry", "Pineapple", "Mango"];
@@ -57,8 +58,10 @@ function App() {
       <Todo/>
       <FormHandling/> */}
 
-      <TemperatureInput temp = {temperature} tempChange = {handleTempChange}/>
-      <TemperatureDisplay temp = {temperature}/>
+      {/* <TemperatureInput temp = {temperature} tempChange = {handleTempChange}/>
+      <TemperatureDisplay temp = {temperature}/> */}
+
+      <UseEffect1/>
     </>
   );
 }
