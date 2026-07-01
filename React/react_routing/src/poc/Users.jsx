@@ -5,8 +5,12 @@ function Users(props) {
     console.log(props.isAdmin);
     const [user,setUser] = useState(null);
     let params = useParams();
+    console.log(params);
+    
     const userID = params.id;
-
+    const userName = params.name;
+    const userAge = params.age;
+    console.log(userName, userAge);
     useEffect(() => {
         const fetchUser = async() => {
             const response = await fetch(`https://fakestoreapi.com/users/${userID}`);
