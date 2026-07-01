@@ -37,3 +37,19 @@ performance.
 
 Tailwind has a large community, strong documentation, and a growing ecosystem of
 plugins and tools that make it useful for many types of web development projects.
+
+## Homework
+
+Build a simple React app with navigation using React Router DOM.
+
+### Requirements
+
+- Create a navigation bar with two links:
+  - `Home`
+  - `Watchlist`
+- Create two React components:
+  - `Home`
+  - `Watchlist`
+- Render the `Home` component when the user clicks the `Home` link.
+- Render the `Watchlist` component when the user clicks the `Watchlist` link.
+- Use `react-router-dom` to handle routing between both pages.
