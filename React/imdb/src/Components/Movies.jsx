@@ -1,58 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function Movies() {
-  const [movies, setMovies] = useState([
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 1",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 2",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 3",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 4",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 5",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 6",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 7",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 8",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 9",
-    },
-    {
-      url: "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-      title: "Movie 10",
-    },
-  ]);
-  const [pageNo, setPageNo] = useState(0);
+function Movies({ movies }) {
+  const [watchlist, setWatchlist] = useState([]);
 
-  const handlePrevPage = () => {
-    if (pageNo > 0) {
-      setPageNo(pageNo - 1);
-    }
+  useEffect(() => {
+    let moviesFromLS = localStorage.getItem('watchlist');
+    if(!moviesFromLS) return;
+    setWatchlist(JSON.parse(moviesFromLS));
+  }, [])
+
+  const addToWatchlist = (movieObj) => {
+    let updatedWatchlist = [...watchlist, movieObj];  
+    setWatchlist(updatedWatchlist);
+    localStorage.setItem('watchlist', JSON.stringify(updatedWatchlist));
   };
 
-  const handleNextPage = () => {
-    setPageNo(pageNo + 1);
+  const removeFromWatchlist = (movieObjId) => {
+    const updatedWatchList = watchlist.filter((movie) => movie.id != movieObjId);
+    setWatchlist(updatedWatchList);
+    localStorage.setItem('watchlist', JSON.stringify(updatedWatchList));
+  };
+
+  const doesContain = (movieObjId) => {
+    console.log(watchlist);
+    
+    for (let i = 0; i < watchlist.length; i++) {
+      if (watchlist[i].id == movieObjId) {
+        return true;
+      }
+    }
+    return false;
   };
 
   return (
@@ -62,22 +39,30 @@ function Movies() {
         {movies.map((movieObj) => (
           <div
             className="h-[40vh] w-[200px] bg-cover bg-center rounded-lg hover:scale-110 duration-300 hover:cursor-pointer flex flex-col justify-end "
-            style={{ backgroundImage: `url(${movieObj.url})` }}
+            style={{
+              backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movieObj.poster_path})`,
+            }}
           >
             <div className="text-white w-full text-center p-2 bg-gray-900/40 rounded-lg">
               {movieObj.title}
             </div>
+            {doesContain(movieObj.id) == false ? (
+              <div
+                className="m-4 flex justify-center h-8 w-8 items-center rounded-lg bg-gray-900/60"
+                onClick={() => addToWatchlist(movieObj)}
+              >
+                😍
+              </div>
+            ) : (
+              <div
+                className="m-4 flex justify-center h-8 w-8 items-center rounded-lg bg-gray-900/60"
+                onClick={() => removeFromWatchlist(movieObj.id)}
+              >
+                ❌
+              </div>
+            )}
           </div>
         ))}
-      </div>
-      <div className="bg-gray-400 h-[50px] p-4 mt-8 w-full flex justify-center items-center gap-2 text-xl">
-        <div onClick={handlePrevPage} className="px-8">
-          <i class="fa-solid fa-arrow-left"></i>
-        </div>
-        <div>{pageNo}</div>
-        <div onClick={handleNextPage} className=" px-8 ">
-          <i class="fa-solid fa-arrow-right"></i>
-        </div>
       </div>
     </div>
   );
