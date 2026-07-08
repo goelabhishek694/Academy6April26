@@ -43,6 +43,12 @@ function WatchList() {
     setSearch(e.target.value);
   };
 
+  const handleDelete = (id) => {
+    let filteredWatchlist = watchlist.filter((movieObj) => movieObj.id != id);
+    setWatchlist([...filteredWatchlist]);
+    // localStorage.setItem("watchlist", JSON.stringify(filteredWatchlist));
+  }
+
   return (
     <>
     <div className="flex justify-center">
@@ -111,7 +117,7 @@ function WatchList() {
                   <td className="pl-2 py-4">
                     {genreIds[movieObj.genre_ids[0]]}
                   </td>
-                  <td className="pl-6 py-4">
+                  <td className="pl-6 py-4" onClick={() => handleDelete(movieObj.id)}>
                     <button className="text-red-500">
                       <i class="fa-solid fa-trash"></i>
                     </button>
