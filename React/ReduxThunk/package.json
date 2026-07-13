@@ -1,5 +1,5 @@
 {
-  "name": "reduxintro",
+  "name": "reduxthunk",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,7 +16,7 @@
     "react-redux": "^9.3.0"
   },
   "devDependencies": {
-
+    "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",

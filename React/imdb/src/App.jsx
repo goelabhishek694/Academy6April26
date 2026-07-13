@@ -1,8 +1,8 @@
 import "./App.css";
 import Navbar from "./Components/Navbar";
-import Home from "./Components/Home";
-import WatchList from "./Components/WatchList";
-import NotFound from "./Components/NotFound";
+import Home from "./Pages/Home";
+import WatchList from "./Pages/WatchList";
+import NotFound from "./Pages/NotFound";
 import { Routes, Route } from "react-router-dom";
 function App() {
   return (
