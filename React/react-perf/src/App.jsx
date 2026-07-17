@@ -1,10 +1,12 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import "./App.css";
-import { Routes, Route , Link} from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 // import Navbar from "./Components/Navbar";
 // import Home from "./Components/Home";
 // import About from "./Components/About";
 // import Contact from "./Components/Contact";
+import LargeArraySum from "./Components/LargeArraySum";
+import ItemList from "./Components/ItemList";
 
 const HomePage = lazy(() => import("./Components/Home"));
 const AboutPage = lazy(() => import("./Components/About"));
@@ -34,7 +36,7 @@ function App() {
 
   return (
     <>
-       {/* <nav>
+      {/* <nav>
       <ul>
         <li>
           <Link to="/" onClick={loadHomePage}>Home</Link>
@@ -48,26 +50,28 @@ function App() {
       </ul>
     </nav> */}
 
-<nav>
-      <ul>
-        <li>
-          <Link to="/" >Home</Link>
-        </li>
-        <li>
-          <Link to="/about" >About</Link>
-        </li>
-        <li>
-          <Link to="/contact" >Contact</Link>
-        </li>
-      </ul>
-    </nav>
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/" element={<HomePage />}></Route>
-        <Route path="/about" element={<AboutPage />}></Route>
-        <Route path="/contact" element={<ContactPage />}></Route>
-      </Routes>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact</Link>
+          </li>
+        </ul>
+      </nav>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/about" element={<AboutPage />}></Route>
+          <Route path="/contact" element={<ContactPage />}></Route>
+        </Routes>
       </Suspense>
+      <LargeArraySum />
+      <ItemList />
     </>
   );
 }
