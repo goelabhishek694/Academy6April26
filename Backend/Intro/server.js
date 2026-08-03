@@ -47,6 +47,55 @@ app.get("/users",(req,res) => {
     });
 });
 
+const movies = [
+    {id: 1, title: "Movie 1", language: "English"},
+    {id: 2, title: "Movie 2", language: "Hindi"},
+    {id: 3, title: "Movie 3", language: "Marathi"},
+];
+
+app.get("/api/movies", (req, res) => {
+    const {lang,sort,genre} = req.query;
+    console.log(lang,sort,genre);
+    let updatedMovies = movies;
+    if(lang){
+        updatedMovies = updatedMovies.filter(movie => movie.language.toLowerCase() === lang.toLowerCase());
+        console.log(updatedMovies);
+    }
+    if(sort){
+
+    }
+    if(genre){
+
+    }
+    
+    res.json({
+        success: true,
+        message:"movies fetched successfully",
+        data: updatedMovies
+    })
+});
+
+app.get("/api/movies/:id", (req, res) => {
+    const {id} = req.params;
+    const movie = movies.find(movie => movie.id == Number(id));
+    if(!movie){
+        return res.json({
+            success: false,
+            message: "Movie not found"
+        })
+    }
+    res.json({
+        success: true,
+        data:movie
+    })
+    
+});
+
+// /api/movies?id=2 -> give me movies but filtered
+// /api/movies/2 -> give me movie 2 
+
+
+
 
 
 
