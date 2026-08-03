@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 
 //middleware -> parse data from client to server
-// puts data in req.body
-//this line is executed for every request
+//reads the json sent by the client 
+// converts it into a js object
+//attached to req.body
 app.use(express.json());
 
 app.get("/greet",(req,res) => {
@@ -89,6 +90,69 @@ app.get("/api/movies/:id", (req, res) => {
         data:movie
     })
     
+});
+
+app.post("/api/movies", (req,res) => {
+    const data = req.body;
+    console.log(data);
+    movies.push(data);
+    res.json({
+        success: true,
+        message: "Movie created successfully",
+        data: movies
+    });
+})
+
+// update movie 3 to english
+
+app.patch("/api/movies/:id", (req,res) => {
+    const {id} = req.params;
+    const data = req.body;
+    console.log(id,data);
+    const movie = movies.find(movie => movie.id == Number(id));
+    if(!movie){
+        return res.json({
+            success: false,
+            message: "Movie not found"
+        })
+    }
+    // movie.language = data.language;
+    // update the movie with new field
+    // ["title"]
+    Object.keys(data).forEach(key => {
+        movie[key] = data[key];
+    });
+
+    res.json({  
+        success: true,
+        message: "Movie updated successfully",
+        data: movies
+    })
+});
+
+app.put("/api/movies/:id", (req,res) => {
+    const {id} = req.params;
+    const data = req.body;
+    console.log(id,data);
+    let movie = movies.find(movie => movie.id == Number(id));
+    if(!movie){
+        return res.json({
+            success: false,
+            message: "Movie not found"
+        });
+    }
+    movie = {
+        ...movie,
+        id: Number(id),
+        title: data.title,
+        language: data.language
+    }
+
+    res.json({
+        success: true,
+        message: "Movie updated successfully",
+        data: movies
+    })
 });
 
 // /api/movies?id=2 -> give me movies but filtered
