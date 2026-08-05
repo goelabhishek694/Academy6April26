@@ -87,7 +87,7 @@ const updateMovie = (req, res) => {
 
 const testError = (req,res,next) => {
   const error = new Error("This is a test error");
-  error.statusCode = 404;
+  error.statusCode = 400;
   next(error);
 };
 

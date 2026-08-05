@@ -5,8 +5,8 @@ const {m1, m2} = require("../middleware/movie");
 
 router.get("/", m1, m2, getAllMovies);
 router.post("/", createMovie);
+router.get("/test-error",testError);
 router.get("/:id",getMovieById);
 router.patch("/:id",updateMovie);
-router.get("/test-error",testError);
 
 module.exports = router;
