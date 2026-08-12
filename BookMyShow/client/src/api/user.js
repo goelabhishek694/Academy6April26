@@ -7,5 +7,5 @@ export const registerUser = async (payload) => {
 
 export const loginUser = async (payload) => {
     const response = await api.post("/users/login", payload);
-    return response;
+    return response.data;
 }

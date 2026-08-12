@@ -1,15 +1,15 @@
 import User from "../model/user.js";
+import bcrypt from "bcrypt"
 
 export const registerUser = async(req,res) => {
     try{
-        console.log("inside register")
         //fetch data from request body
         const {name,email,password,role="user"} = req.body;
 
         //validation
         // 1. check if fields exist
         if(!name || !email || !password || !role){
-            return res.status(400).json({
+            return res.json({
                 success: false,
                 message: "data invalid"
             })
@@ -17,21 +17,23 @@ export const registerUser = async(req,res) => {
         // 2. check if user already exists
         const isUserPresent = await User.findOne({email});
         if(isUserPresent){
-            return res.status(400).json({
+            return res.json({
                 success: false,
                 message: "User already exists",
               });
         }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await User.create({
+            name, email, password:hashedPassword, role
+        });
 
-        await User.create({name, email, password, role});
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "user registered"
         })
 
     }catch(err){
-        console.log("hello")
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: err.message
         })
@@ -44,14 +46,15 @@ export const loginUser = async(req, res) => {
         //check if user exists 
         const user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({
+            return res.json({
                 success: false,
                 message: "user does not exist, please register first"
             });
         }
         //check if password is correct
-        if(user.password !== password){
-            return res.status(400).json({
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch){
+            return res.json({
                 success: false,
                 message: "invalid credentials"
             });

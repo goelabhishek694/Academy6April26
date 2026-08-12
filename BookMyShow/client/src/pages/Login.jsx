@@ -18,6 +18,7 @@ function Login() {
         message.error(response.message);
       }
     } catch (err) {
+      console.log("in catch", JSON.stringify(err));
       message.error(err.message);
     }
   };
