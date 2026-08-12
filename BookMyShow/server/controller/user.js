@@ -4,7 +4,7 @@ export const registerUser = async(req,res) => {
     try{
         console.log("inside register")
         //fetch data from request body
-        const {name,email,password,role} = req.body;
+        const {name,email,password,role="user"} = req.body;
 
         //validation
         // 1. check if fields exist
