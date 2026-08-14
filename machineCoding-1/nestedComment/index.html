@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Nested Comments</h1>
+    <div class="add-comment">
+      <textarea id="comment-input" placeholder="Write a comment..."></textarea>
+      <button id="add-comment-btn">Add Comment</button>
+    </div>
+
+    <div class="comments-container">
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>
+
+
+<!-- I built a comment card using createElement, textContent, and appendChild. Compare this with building the same card using one innerHTML string. Explain readability, safety for user text, and maintainability. Do not rewrite my code. -->
+
+<!-- Review this nested comment handler. It uses closest(.comment), then querySelector(.reply-input) and querySelector(.replies-container). Explain what each search is trying to scope. Identify any maintainability risk when many nested descendants exist, but do not introduce a framework or rewrite the full solution. -->

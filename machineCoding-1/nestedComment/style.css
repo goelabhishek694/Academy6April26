@@ -1,0 +1,22 @@
+.comment {
+    border-left: 2px solid #ddd;
+    padding-left: 16px;
+    margin-top: 12px;
+  }
+  .comment-text {
+    margin: 0 0 6px;
+  }
+  .comment-actions button {
+    margin-right: 8px;
+  }
+  .reply-input {
+    display: none;
+    margin-top: 8px;
+  }
+  .replies-container {
+    margin-top: 8px;
+  }
+  .collapsed {
+    display: none;
+  }
+  
