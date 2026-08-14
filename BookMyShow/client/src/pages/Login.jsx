@@ -10,6 +10,7 @@ function Login() {
       const response = await loginUser(values);
       console.log(response)
       if (response.success) {
+        localStorage.setItem("token", response.data)
         message.success(response.message);
         setTimeout(() => {
           navigate("/");

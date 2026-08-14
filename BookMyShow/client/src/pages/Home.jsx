@@ -1,11 +1,32 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import { getCurrentUser } from "../api/user.js";
 
-function Home() {
+export default function Home() {
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      try {
+        const data = await getCurrentUser();
+        console.log(data?.data?.user);
+        setUser(data?.data?.user);
+      } catch (err) {
+        setError("Failed to load profile");
+      }
+    };
+
+    fetchMe();
+  }, []);
+
+  if (error) return <div>{error}</div>;
+  if (!user) return <div>Loading...</div>;
+
   return (
     <div>
-        <h1>Home</h1>
+      <h2>Home</h2>
+      <p>Name: {user.name}</p>
+      <p>Email: {user.email}</p>
     </div>
-  )
+  );
 }
-
-export default Home

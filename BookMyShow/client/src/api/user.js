@@ -9,3 +9,8 @@ export const loginUser = async (payload) => {
     const response = await api.post("/users/login", payload);
     return response.data;
 }
+
+export const getCurrentUser = async() => {
+    const response = await api.get("/users/me");
+    return response.data
+}
