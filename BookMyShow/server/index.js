@@ -5,6 +5,7 @@ import cors from "cors";
 
 import connectDB from './config/db.js';
 import userRoutes from './route/user.js';
+import movieRoutes from './route/movie.js';
 
 const app = express();
 connectDB();
@@ -16,6 +17,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use("/api/users", userRoutes);
+app.use("/api/movies", movieRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
