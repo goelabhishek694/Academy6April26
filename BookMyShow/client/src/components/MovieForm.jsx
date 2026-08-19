@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Modal, message } from "antd";
-import { addMovie } from "../api/movie";
+import { addMovie, updateMovie } from "../api/movie";
 
-function MovieForm({ open, setOpen, onSuccess }) {
+function MovieForm({ open, setOpen, onSuccess, selectedMovie }) {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
@@ -11,7 +11,9 @@ function MovieForm({ open, setOpen, onSuccess }) {
       duration: Number(values.duration),
     };
 
-    const response = await addMovie(payload);
+    const response = selectedMovie
+      ? await updateMovie(selectedMovie._id, payload)
+      : await addMovie(payload);
 
     if (response.success) {
       message.success(response.message);
@@ -25,9 +27,27 @@ function MovieForm({ open, setOpen, onSuccess }) {
     }
   };
 
+  useEffect(() => {
+    //edit movie form
+    if (selectedMovie) {
+      form.setFieldsValue({
+        title: selectedMovie.title,
+        poster: selectedMovie.poster,
+        description: selectedMovie.description,
+        duration: selectedMovie.duration,
+        genre: selectedMovie.genre,
+        language: selectedMovie.language,
+        date: selectedMovie.date ? selectedMovie.date.slice(0, 10) : "",
+      });
+    } else {
+      //add movie form
+      form.resetFields();
+    }
+  }, [selectedMovie, form]);
+
   return (
     <Modal
-      title="Add Movie"
+      title={selectedMovie ? "Edit Movie" : "Add Movie"}
       open={open}
       onCancel={() => {
         setOpen(false);
