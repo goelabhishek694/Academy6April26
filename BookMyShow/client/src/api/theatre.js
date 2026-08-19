@@ -27,3 +27,31 @@ export const addTheatre = async (payload) => {
     );
   }
 };
+
+export const getAllTheatres = async () => {
+  try {
+    const response = await api.get("/theatres/all");
+    return response.data;
+  } catch (error) {
+    return (
+      error.response.data || {
+        success: false,
+        message: error.message,
+      }
+    );
+  }
+};
+
+export const approveTheatre = async (theatre_id, payload) => {
+  try {
+    const response = await api.put(`/theatres/${theatre_id}`, payload);
+    return response.data;
+  } catch (error) {
+    return (
+      error.response.data || {
+        success: false,
+        message: error.message,
+      }
+    );
+  }
+};
