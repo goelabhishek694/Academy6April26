@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Table, Tag, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 import { getPartnerTheatres } from "../api/theatre.js";
 import TheatreForm from "../components/TheatreForm";
 
 function Partner() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [theatres, setTheatres] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -46,6 +48,12 @@ function Partner() {
           <Tag color="orange">Pending</Tag>
         ),
     },
+    {
+      title: "Add shows",
+      render: (_, record) => record.isActive && (
+        <Button onClick={() => navigate(`/partner/theatres/${record._id}/shows`)}>+ Shows</Button>
+      )
+    }
   ];
 
   return (
