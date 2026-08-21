@@ -7,7 +7,8 @@ import Admin from './pages/Admin'
 import ProtectedRoute from './components/ProtectedRoute'
 import Partner from './pages/Partner'
 import User from './pages/User'
-import TheatreShows from './components/TheatreShows'
+import TheatreShows from './pages/TheatreShows'
+import MovieDetails from './pages/MovieDetails'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/partner' element={<ProtectedRoute><Partner/></ProtectedRoute>} />
         <Route path='/user' element={<ProtectedRoute><User/></ProtectedRoute>} />
         <Route path='/partner/theatres/:theatreId/shows' element={<ProtectedRoute><TheatreShows/></ProtectedRoute>} />
+        <Route path='/movie/:movieId' element={<ProtectedRoute><MovieDetails/></ProtectedRoute>} />
       </Routes>
     </>
   )

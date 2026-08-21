@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import { Button, Modal, Form, Input, Select, message } from "antd";
 import { getAllMovies } from "../api/movie";
 import { addShow, getShowsByTheatre } from "../api/show";
+import mongoose from "mongoose";
 
 export default function TheatreShows() {
   const { theatreId } = useParams();
+  console.log(theatreId);
   const [shows, setShows] = useState([]);
   const [movies, setMovies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,14 +31,16 @@ export default function TheatreShows() {
   }, []);
 
   const onFinish = async (values) => {
+    console.log(values);
     try {
       const payload = {
-        theatre: theatreId,
+        theatre: (theatreId),
         movie: values.movie,
         date: values.date,
         time: values.time,
         ticketPrice: Number(values.ticketPrice),
       };
+      console.log(payload);
 
       const res = await addShow(payload);
 

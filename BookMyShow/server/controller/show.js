@@ -29,7 +29,7 @@ export const getShowsByMovie = async(req, res) => {
         res.send({
             success: true,
             message: "Shows fetched successfully",
-            shows,
+            data: shows,
         })
     }catch(err){
         res.send({
@@ -49,7 +49,7 @@ export const getShowsByTheatre = async(req, res) => {
         res.send({
             success: true,
             message: "Shows fetched successfully",
-            shows,
+            data: shows,
         })
     }catch(err){
         res.send({
