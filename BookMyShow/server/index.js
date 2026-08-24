@@ -8,6 +8,7 @@ import userRoutes from './route/user.js';
 import movieRoutes from './route/movie.js';
 import theatreRoutes from './route/theatre.js';
 import showRoutes from './route/show.js';
+import bookingRoutes from './route/booking.js';
 
 const app = express();
 connectDB();
@@ -22,6 +23,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/theatres", theatreRoutes);
 app.use("/api/shows", showRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

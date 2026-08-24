@@ -5,7 +5,11 @@ import { getShowById } from "../api/show.js";
 import { useNavigate, useParams } from "react-router-dom";
 import { message, Card, Row, Col, Button } from "antd";
 import moment from "moment";
-import StripeCheckout from "react-stripe-checkout";
+import StripeCheckoutImport from "react-stripe-checkout";
+import { bookShow, makePayment } from "../api/booking.js";
+
+// Vite 8 CJS interop: this package exports `{ default: Component }`.
+const StripeCheckout = StripeCheckoutImport.default || StripeCheckoutImport;
 
 const BookShow = () => {
   // Redux state and hooks
@@ -118,8 +122,42 @@ const BookShow = () => {
     getData();
   }, []);
 
-  const onToken = (token) => {
-    console.log(token);
+  const onToken = async (token) => {
+    try{
+        // dispatch(ShowLoading());
+        const response = await makePayment(token, selectedSeats.length * (show.ticketPrice * 100));
+        if(response.success){
+            message.success(response.message);
+            book(response.data);
+        }else{
+            message.error(response.message);
+        }
+        // dispatch(HideLoading());
+    }catch(err){
+        message.error(err.message);
+    }
+  };
+
+  const book = async (transactionId) => {
+    try {
+    //   dispatch(ShowLoading());
+      const response = await bookShow({
+        show: params.id,
+        transactionId,
+        seats: selectedSeats,
+        user: user._id,
+      });
+      if (response.success) {
+        message.success("Show Booking done!");
+        navigate("/profile");
+      } else {
+        message.error(response.message);
+      }
+    //   dispatch(HideLoading());
+    } catch (err) {
+      message.error(err.message);
+    //   dispatch(HideLoading());
+    }
   };
 
   // JSX rendering
