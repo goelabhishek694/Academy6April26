@@ -41,3 +41,17 @@ export const getShowsByTheatre = async (theatreId) => {
     );
   }
 };
+
+export const getShowById = async (showId) => {
+  try {
+    const response = await api.get(`/shows/${showId}`);
+    return response.data;
+  } catch (error) {
+    return (
+      error.response.data || {
+        success: false,
+        message: error.message,
+      }
+    );
+  }
+};

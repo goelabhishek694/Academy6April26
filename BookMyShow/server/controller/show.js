@@ -59,3 +59,22 @@ export const getShowsByTheatre = async(req, res) => {
     }
 }
 
+export const getShowById = async(req, res) => {
+    try{
+        const {showId} = req.params;
+        const show = await Show.findById(showId)
+        .populate("movie")
+        .populate("theatre");
+        
+        res.send({
+            success: true,
+            message: "Show fetched successfully",
+            data: show,
+        })
+    }catch(err){
+        res.send({
+            success: false,
+            message: err.message,
+        })
+    }
+}
