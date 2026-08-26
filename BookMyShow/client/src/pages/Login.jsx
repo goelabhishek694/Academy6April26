@@ -2,15 +2,19 @@ import React from "react";
 import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/user";
+import { useDispatch } from "react-redux";
+import setUser  from "../redux/userSlice";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onFinish = async (values) => {
     try {
       const response = await loginUser(values);
       console.log(response)
       if (response.success) {
-        localStorage.setItem("token", response.data)
+        localStorage.setItem("token", response.data);
+        dispatch(setUser(response.data));
         message.success(response.message);
         setTimeout(() => {
           navigate("/");
@@ -71,6 +75,9 @@ function Login() {
           <div>
             <p>
               New User ? <Link to="/register">Register Here</Link>
+            </p>
+            <p>
+              Forgot Password ? <Link to="/forget">Click Here</Link>
             </p>
           </div>
         </section>

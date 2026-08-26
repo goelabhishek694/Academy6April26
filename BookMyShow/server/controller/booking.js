@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import stripe from 'stripe';
+import emailHelper from '../util/emailHelper';
 const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY);
 
 export const makePayment = async (req, res) => {
@@ -44,6 +45,7 @@ export const confirmBooking = async (req, res) => {
         const show = await Show.findById(req.body.show).populate('movie');
         const updatedBookedSeat = [...show.bookedSeats, ...req.body.seats];
         await Show.findByIdAndUpdate(req.body.show, {bookedSeats: updatedBookedSeat});
+        emailHelper("otp", "", {name: "Abhishek", otp: "123456"});
         res.send({
             success: true,
             message: "Booking confirmed successfully",

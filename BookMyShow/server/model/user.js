@@ -22,6 +22,13 @@ const userSchema = new mongoose.Schema({
         enum: ["user", "partner", "admin"],
         default: "user",
         required: true
+    },
+    otp:{
+        type:String,
+    },
+    //prevent re use of otp after a certain time
+    otpExpiry:{
+        type:Date
     }
 },{timestamps:true});
 
