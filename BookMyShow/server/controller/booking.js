@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import stripe from 'stripe';
-import emailHelper from '../util/emailHelper';
+import emailHelper from '../util/emailHelper.js';
 const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY);
 
 export const makePayment = async (req, res) => {
@@ -45,7 +45,34 @@ export const confirmBooking = async (req, res) => {
         const show = await Show.findById(req.body.show).populate('movie');
         const updatedBookedSeat = [...show.bookedSeats, ...req.body.seats];
         await Show.findByIdAndUpdate(req.body.show, {bookedSeats: updatedBookedSeat});
-        emailHelper("otp", "", {name: "Abhishek", otp: "123456"});
+        const populatedBooking = await Booking.findById(newBooking._id)
+        .populate("user")
+        .populate("show")
+        .populate({
+            path: "show",
+            populate: {
+                path: "movie",
+                model: "Movie",
+            }
+        })
+        .populate({
+            path: "show",
+            populate: {
+                path: "theatre",
+                model: "Theatre",
+            }
+        });
+        console.log(populatedBooking);
+        emailHelper("tickets", populatedBooking.user.email, {
+            movie: populatedBooking.show.movie.title,
+            name: populatedBooking.user.name,
+            theatre: populatedBooking.show.theatre.name,
+            date:populatedBooking.show.date,
+            time:populatedBooking.show.time,
+            seats:populatedBooking.seats,
+            amount:populatedBooking.seats.length * populatedBooking.show.ticketPrice,
+            transactionId:populatedBooking.transactionId,
+        }); 
         res.send({
             success: true,
             message: "Booking confirmed successfully",

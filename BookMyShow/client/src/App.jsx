@@ -10,6 +10,8 @@ import User from './pages/User'
 import TheatreShows from './pages/TheatreShows'
 import MovieDetails from './pages/MovieDetails'
 import BookShow from './pages/BookShow'
+import ForgetPassword from './pages/ForgetPassword'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
 
@@ -25,6 +27,8 @@ function App() {
         <Route path='/partner/theatres/:theatreId/shows' element={<ProtectedRoute><TheatreShows/></ProtectedRoute>} />
         <Route path='/movie/:movieId' element={<ProtectedRoute><MovieDetails/></ProtectedRoute>} />
         <Route path='/book-show/:showId' element={<ProtectedRoute><BookShow/></ProtectedRoute>} />
+        <Route path='/forget' element={<ForgetPassword/>} />
+        <Route path='/reset/:email' element={<ResetPassword/>} />
       </Routes>
     </>
   )

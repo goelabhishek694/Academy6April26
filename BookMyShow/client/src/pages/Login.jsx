@@ -14,7 +14,7 @@ function Login() {
       console.log(response)
       if (response.success) {
         localStorage.setItem("token", response.data);
-        dispatch(setUser(response.data));
+        // dispatch(setUser(response.data));
         message.success(response.message);
         setTimeout(() => {
           navigate("/");

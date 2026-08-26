@@ -1,10 +1,3 @@
-// we have name and otp values 
-// we have emal templates -> otp.html 
-
-// 1. read the html File
-// 2. replace #{name} -> name value
-// 3. replace #{otp} -> otp value
-// 4. return the html string
 import dotenv from 'dotenv';
 dotenv.config();
 import fs from 'fs';
@@ -24,7 +17,7 @@ function replaceContent(content, data){
 async function emailHelper(templateName, receiverEmail, data){
     try{
         console.log(process.cwd());
-        const templatePath = path.join(process.cwd(),"email_templates",`${templateName}.html`);
+        const templatePath = path.join(process.cwd(),"util","email_templates",`${templateName}.html`);
         console.log(templatePath);
         let content = await fs.promises.readFile(templatePath, "utf-8");
         content = replaceContent(content, data);
@@ -48,7 +41,7 @@ async function emailHelper(templateName, receiverEmail, data){
     }
 }
 
-await emailHelper("otp", "test@test.com", {name: "John", otp: "123456"});
+// await emailHelper("otp", "test@test.com", {name: "John", otp: "123456"});
 
 export default emailHelper;
 

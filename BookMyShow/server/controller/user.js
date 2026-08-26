@@ -1,7 +1,7 @@
 import User from "../model/user.js";
 import bcrypt from "bcrypt"
-import { signToken } from "../util/jwt.js";
-
+import { generateOTP, signToken } from "../util/helper.js";
+import emailHelper from "../util/emailHelper.js";
 export const registerUser = async(req,res) => {
     try{
         //fetch data from request body
@@ -90,6 +90,92 @@ export const getCurrentUser = async(req, res) => {
             message: "user fetched succesfully",
             data: {user}
         })
+    }catch(err){
+        res.status(500).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
+export const forgetPassword = async(req, res) => {
+    try{
+        /****
+    * 1. You can ask for email
+    * 2. check if email is present or not
+    *  * if email is not present -> send a response to the user(user not found)
+    * 3. if email is present -> create basic otp -> and send to the email
+    * 4. also store that otp -> in the userModel
+    *
+    * ***/
+
+    const {email} = req.body;
+    const user = await User.findOne({email});
+    if(!user){
+        return res.status(400).json({
+            success: false,
+            message: "user not found"
+        });
+    }
+    const otp = generateOTP();
+    user.otp = otp;
+    user.otpExpiry = Date.now() + 10 * 60 * 1000; //10 minutes
+    await user.save();
+    emailHelper("otp", email, {name: user.name, otp: otp});
+    return res.status(200).json({
+        success: true,
+        message: "otp sent to email"
+    });
+    }catch(err){
+        res.status(500).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
+export const resetPassword = async(req, res) => {
+    try{
+        const {email} = req.params;
+        const resetDetails = req.body;
+        if(!resetDetails.password || !resetDetails.otp){
+            return res.status(401).json({
+                status: "failure",
+                message: "invalid request",
+              });
+        }
+        const user = await User.findOne({email});
+        if(!user){
+            return res.status(401).json({
+                status: "failure",
+                message: "user not found",
+              });
+        }
+        //if otp is expired 
+        if(Date.now() > user.otpExpiry){
+            return res.status(401).json({
+                status: "failure",
+                message: "otp expired",
+              });
+        }
+        if(resetDetails.otp !== user.otp){
+            return res.status(401).json({
+                status: "failure",
+                message: "invalid otp",
+              });
+        }
+
+        user.password = await bcrypt.hash(resetDetails.password, 10);
+        //remove otp
+        user.otp = undefined;
+        user.otpExpiry = undefined;
+        await user.save();
+        return res.status(200).json({
+            status: "success",
+            message: "password reset successfully",
+          });
+
+
     }catch(err){
         res.status(500).json({
             success: false,

@@ -24,3 +24,11 @@ export function verifyToken(token) {
     console.log(err);
   }
 }
+
+export function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000);
+
+  // 0 to 0.99  * 900000 = ( 0 to 899999 ) + 100000 = 100000 to 999999
+  // we get six digit number b/w 100000 to 999999
+
+}
