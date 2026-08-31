@@ -7,6 +7,8 @@ const btn = document.getElementById("send");
 const input = document.getElementById("message");
 const ul = document.getElementById("list");
 const createGrp = document.getElementById("createGrp");
+const joinGrp = document.getElementById("joinGrp");
+const stg = document.getElementById("stg");
 
 btn.addEventListener("click", () => {
   const value = input.value;
@@ -38,5 +40,22 @@ socket.on("broadcast", (data) => {
 
 createGrp.addEventListener("click", () => {
     console.log("group created req");
-    socket.emit("create_grp", Math.random(0,1)*1000);
+    socket.emit("create_grp", 100);
 });
+
+joinGrp.addEventListener("click", () => {
+    console.log("group joined req");
+    socket.emit("join_room");
+});
+
+stg.addEventListener("click", () => {
+  let value = input.value;
+  if(value){
+     socket.emit("grp message", value);
+  }
+});
+
+socket.on("serv_grp_message", function (data) {
+  console.log("grp message", data);
+});
+

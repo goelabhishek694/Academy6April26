@@ -15,6 +15,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 io.on("connection", (socket) => {
+    let room;
     console.log("a user connected", socket.id);
     // setInterval(() => {
     //     socket.emit(
@@ -32,7 +33,23 @@ io.on("connection", (socket) => {
     socket.on("message", (data) => {
         console.log("message received", data);
         socket.broadcast.emit("broadcast", data);
-    })
+    });
+
+    socket.on("create_grp", (roomId) => {
+        console.log("group created", roomId);
+        room = roomId;
+        socket.emit("join_room");
+    });
+
+    socket.on("join_room", () => {
+        console.log(socket.id + " joined the room ", 100);
+        socket.join(100);
+    });
+
+    socket.on("grp message", (data) => {
+        console.log("message received in group", data);
+        socket.to(room).emit("serv_grp_message", data);
+    });
 });
 
 app.get("/", (req, res) => {
