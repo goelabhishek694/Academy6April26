@@ -3,6 +3,8 @@ dotenv.config();
 import express from 'express';
 import cors from "cors";
 import rateLimit from 'express-rate-limit';
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
 
 import connectDB from './config/db.js';
 import userRoutes from './route/user.js';
@@ -20,6 +22,21 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(mongoSanitize());
+app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "https://fonts.googleapis.com"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        objectSrc: ["'none'"],
+      },
+    })
+   );
+   
 
 //rate limitter middleware
 const apiLimiter = rateLimit({
