@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from "cors";
+import rateLimit from 'express-rate-limit';
 
 import connectDB from './config/db.js';
 import userRoutes from './route/user.js';
@@ -19,6 +20,16 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+//rate limitter middleware
+const apiLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000, //1 minutes
+    max: 10,
+    message: "Too many requests, please try again after 1 minute."
+});
+
+app.use("/api", apiLimiter);
+
 app.use("/api/users", userRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/theatres", theatreRoutes);
