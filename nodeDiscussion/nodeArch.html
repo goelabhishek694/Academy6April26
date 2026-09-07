@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Node.js Architecture</title>
+    <style>
+      :root {
+        --bg: #0f1410;
+        --surface: #182018;
+        --card: #1e2a1e;
+        --border: #2d3d2d;
+        --text: #e8eee8;
+        --muted: #a3b5a3;
+        --accent: #68a063;
+        --accent-dark: #3c873a;
+        --code-bg: #121812;
+        --link: #8fd88a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.65;
+      }
+
+      a {
+        color: var(--link);
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(15, 20, 16, 0.95);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(8px);
+      }
+
+      .header-inner {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0.9rem 1.25rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.25rem;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 650;
+        color: var(--accent);
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem 1rem;
+        font-size: 0.88rem;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: var(--muted);
+      }
+
+      nav a:hover {
+        color: var(--text);
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+
+      section {
+        margin-bottom: 3.25rem;
+        scroll-margin-top: 4.5rem;
+      }
+
+      h2 {
+        font-size: 1.65rem;
+        margin: 0 0 0.75rem;
+        color: #fff;
+      }
+
+      h3 {
+        font-size: 1.15rem;
+        margin: 1.75rem 0 0.6rem;
+        color: var(--accent);
+      }
+
+      p,
+      li {
+        color: var(--text);
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .figure {
+        margin: 1.25rem 0 1.5rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: #fff;
+      }
+
+      .figure.dark img {
+        background: #111;
+      }
+
+      figcaption {
+        padding: 0.7rem 1rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+        border-top: 1px solid var(--border);
+      }
+
+      ol,
+      ul {
+        padding-left: 1.25rem;
+      }
+
+      li + li {
+        margin-top: 0.4rem;
+      }
+
+      .os-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.75rem;
+        margin: 1rem 0 1.25rem;
+      }
+
+      .os-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.85rem 1rem;
+      }
+
+      .os-card strong {
+        display: block;
+        color: var(--accent);
+        margin-bottom: 0.2rem;
+      }
+
+      .os-card span {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .steps {
+        counter-reset: step;
+        list-style: none;
+        padding: 0;
+      }
+
+      .steps li {
+        position: relative;
+        padding: 0.85rem 1rem 0.85rem 3.25rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 0.6rem;
+      }
+
+      .steps li::before {
+        counter-increment: step;
+        content: counter(step);
+        position: absolute;
+        left: 0.85rem;
+        top: 0.85rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        border-radius: 50%;
+        background: var(--accent-dark);
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem 1.1rem;
+        overflow-x: auto;
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      p code,
+      li code {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 0.1rem 0.35rem;
+        font-size: 0.86em;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      @media (max-width: 720px) {
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .callout {
+        background: var(--card);
+        border-left: 4px solid var(--accent);
+        padding: 0.9rem 1rem;
+        border-radius: 0 8px 8px 0;
+        margin: 1rem 0;
+      }
+
+      .phase-list {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .phase {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+      }
+
+      .phase strong {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <h1>Node.js Architecture</h1>
+        <nav>
+          <a href="#v8-libuv">V8 &amp; libuv</a>
+          <a href="#multithreaded">Threads</a>
+          <a href="#layers">Layers</a>
+          <a href="#execution">Execution</a>
+          <a href="#event-loop">Event Loop</a>
+          <a href="#code">Code</a>
+          <a href="#scaling">Scaling</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="v8-libuv">
+        <h2>V8 Engine and libuv</h2>
+        <p>
+          The two main parts of Node.js are the <strong>V8 engine</strong> and
+          <strong>libuv</strong>.
+        </p>
+
+        <figure class="figure">
+          <img src="images/node.png" alt="Node.js architecture: V8 engine and libuv with event loop and thread pool" />
+          <figcaption>node.png — V8 converts JavaScript to machine code; libuv provides the event loop and thread pool.</figcaption>
+        </figure>
+
+        <ul>
+          <li>
+            <strong>libuv</strong> gives Node.js event-driven, asynchronous I/O.
+            It implements the event loop and a thread pool so Node can handle
+            many file and network operations concurrently. This is the core of
+            Node's non-blocking behavior.
+          </li>
+          <li>
+            The <strong>thread pool</strong> runs tasks in parallel. It handles
+            heavier work such as filesystem access, cryptography, and demanding
+            processes like video conversion.
+          </li>
+        </ul>
+
+        <p>
+          Official site:
+          <a href="https://libuv.org/" target="_blank" rel="noopener">libuv.org</a>
+        </p>
+
+        <h3>Event loop backends across operating systems</h3>
+        <p>
+          The docs describe a full-featured event loop backed by
+          <code>epoll</code>, <code>kqueue</code>, <code>IOCP</code>, and event
+          ports. libuv's event loop is a control center that picks the right OS
+          mechanism for asynchronous I/O.
+        </p>
+
+        <div class="os-grid">
+          <div class="os-card">
+            <strong>epoll</strong>
+            <span>Linux</span>
+          </div>
+          <div class="os-card">
+            <strong>IOCP</strong>
+            <span>Windows / Microsoft</span>
+          </div>
+          <div class="os-card">
+            <strong>kqueue</strong>
+            <span>BSD systems, including macOS</span>
+          </div>
+          <div class="os-card">
+            <strong>event ports</strong>
+            <span>Solaris and related systems</span>
+          </div>
+        </div>
+
+        <p>
+          libuv provides a robust event loop that works with system-level
+          asynchronous I/O: reading and writing files, database operations, and
+          more.
+        </p>
+        <p class="muted">
+          There are videos that walk through creating your own JavaScript
+          runtime using V8 and libuv.
+        </p>
+      </section>
+
+      <section id="multithreaded">
+        <h2>When is Node.js multithreaded?</h2>
+        <p>
+          Node's main execution thread is single-threaded. libuv offers
+          multithreading when work is offloaded to its thread pool.
+        </p>
+        <p>
+          Guide:
+          <a
+            href="https://nodejs.org/en/guides/dont-block-the-event-loop/"
+            target="_blank"
+            rel="noopener"
+            >Don't Block the Event Loop</a
+          >
+        </p>
+
+        <figure class="figure dark">
+          <img
+            src="images/1.%20IO-intensive.png"
+            alt="I/O-intensive and CPU-intensive Node.js APIs that use the libuv thread pool"
+          />
+          <figcaption>
+            1. IO-intensive.png — DNS, filesystem, crypto, and zlib APIs that run on the worker pool.
+          </figcaption>
+        </figure>
+
+        <ul>
+          <li>
+            Node offloads certain <strong>I/O-intensive</strong> and
+            <strong>CPU-intensive</strong> tasks to a thread pool managed by
+            libuv.
+          </li>
+          <li>
+            DNS lookups, filesystem work, cryptographic computations, and zlib
+            compression can run in parallel without blocking the main event
+            loop.
+          </li>
+          <li>
+            For those tasks, Node uses its worker pool and behaves in a
+            multi-threaded way.
+          </li>
+        </ul>
+
+        <figure class="figure dark">
+          <img
+            src="images/Activity%20Monitor.png"
+            alt="macOS Activity Monitor showing a node process with multiple threads"
+          />
+          <figcaption>
+            Activity Monitor.png — the extra threads belong to Node's internal thread pool, not your JavaScript code.
+          </figcaption>
+        </figure>
+
+        <div class="callout">
+          The threads you see in Activity Monitor are part of Node.js's
+          internal thread pool. They run work that has been offloaded from the
+          main thread.
+        </div>
+      </section>
+
+      <section id="layers">
+        <h2>Architecture layers</h2>
+
+        <figure class="figure">
+          <img
+            src="images/Application%20Code.png"
+            alt="Layered Node.js architecture from application code down to the operating system"
+          />
+          <figcaption>
+            Application Code.png — application code sits on Node Core (standard library, bindings, libuv, V8 and other C/C++ libraries), which sits on the OS.
+          </figcaption>
+        </figure>
+
+        <ol>
+          <li>
+            <strong>Application code</strong> — the JavaScript you write.
+          </li>
+          <li>
+            <strong>Node Core</strong> — the JavaScript runtime and the basic
+            modules that make Node a server-side platform.
+          </li>
+          <li>
+            <strong>Binding layer</strong> — the bridge between JavaScript and
+            internal C/C++ code. It translates JS calls into system-level
+            actions.
+          </li>
+          <li>
+            <strong>Node standard library</strong> — modules such as
+            <code>fs</code>, <code>os</code>, and <code>http</code>.
+          </li>
+          <li><strong>libuv</strong> is written in C.</li>
+          <li><strong>V8</strong> is written in C++.</li>
+          <li>
+            <strong>OpenSSL</strong> — cryptography for SSL/TLS and secure
+            network communication.
+          </li>
+          <li>
+            <strong>c-ares</strong> — a C library that performs DNS requests.
+          </li>
+          <li>
+            <strong>http-parser</strong> — a lightweight C library used to parse
+            HTTP messages.
+          </li>
+        </ol>
+      </section>
+
+      <section id="execution">
+        <h2>Order of execution</h2>
+
+        <figure class="figure">
+          <img
+            src="images/Application.png"
+            alt="Node.js architecture flow: application, V8, bindings, event queue, event loop, and worker threads"
+          />
+          <figcaption>
+            Application.png — JavaScript flows through V8 and Node bindings into libuv's event queue, event loop, and worker threads, then callbacks return to the app.
+          </figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li>
+            <strong>Application code execution</strong> — you write JavaScript
+            that V8 executes.
+          </li>
+          <li>
+            <strong>V8 engine</strong> — compiles JavaScript into machine code.
+          </li>
+          <li>
+            <strong>Node bindings</strong> — bridge your JavaScript to Node's
+            C/C++ core.
+          </li>
+          <li>
+            <strong>libuv and other C/C++ modules</strong> — handle I/O and
+            work such as cryptographic functions.
+          </li>
+          <li>
+            <strong>Callback to V8</strong> — when I/O finishes, results go
+            back to V8, usually through callbacks.
+          </li>
+          <li>
+            <strong>Application code</strong> — the callback or result returns
+            to your app so it can continue or respond to the client.
+          </li>
+        </ol>
+      </section>
+
+      <section id="event-loop">
+        <h2>Event loop</h2>
+        <p>
+          Think of Node.js as a post office that never closes and handles
+          different kinds of tasks.
+        </p>
+
+        <ol>
+          <li>
+            <strong>Starting the day (initialization)</strong> — when Node
+            starts, it is like the post office opening and preparing to sort
+            mail.
+          </li>
+          <li>
+            <strong>Sorting mail (phases)</strong> — different sections handle
+            local, express, and international mail. Node has phases that handle
+            specific kinds of tasks.
+          </li>
+          <li>
+            <strong>Waiting for mail trucks (poll phase)</strong> — Node waits
+            for events (for example data from a database) and handles tasks that
+            are ready.
+          </li>
+          <li>
+            <strong>Special deliveries (check phase)</strong> —
+            <code>setImmediate()</code> callbacks are handled right away after
+            poll.
+          </li>
+        </ol>
+
+        <p>
+          Event loop docs:
+          <a
+            href="https://nodejs.org/en/guides/event-loop-timers-and-nexttick/"
+            target="_blank"
+            rel="noopener"
+            >Timers, setImmediate, and process.nextTick</a
+          >
+        </p>
+
+        <h3>Flow from the Node.js docs</h3>
+        <div class="phase-list">
+          <div class="phase">
+            <strong>Initialization</strong> — when a Node process starts, it
+            initializes the event loop.
+          </div>
+          <div class="phase">
+            <strong>Phases</strong> — the loop runs through several phases,
+            each with its own queue of callbacks.
+          </div>
+          <div class="phase">
+            <strong>Poll</strong> — retrieves new I/O events and executes their
+            callbacks (reading files, receiving network requests, and so on).
+          </div>
+          <div class="phase">
+            <strong>Check</strong> — runs <code>setImmediate()</code> callbacks.
+          </div>
+          <div class="phase">
+            <strong>Close callbacks</strong> — for example
+            <code>socket.on('close', ...)</code>.
+          </div>
+          <div class="phase">
+            <strong>Timers</strong> — runs ready
+            <code>setTimeout()</code> / <code>setInterval()</code> callbacks.
+          </div>
+          <div class="phase">
+            <strong>Microtasks</strong> — after each phase, resolved Promise
+            callbacks are processed.
+          </div>
+          <div class="phase">
+            <strong>process.nextTick()</strong> — treated like a microtask.
+            Runs as soon as the current operation completes, before the next
+            phase.
+          </div>
+          <div class="phase">
+            <strong>Repeat</strong> — continues until there are no more
+            callbacks, then Node can exit.
+          </div>
+        </div>
+
+        <h3>Summary</h3>
+        <ul>
+          <li>
+            Node uses an event loop for non-blocking I/O by offloading work to
+            the system kernel whenever possible.
+          </li>
+          <li>
+            Phases: timers, pending callbacks, idle/prepare, poll, check, and
+            close callbacks.
+          </li>
+          <li>
+            Timers schedule callbacks after a minimum threshold.
+          </li>
+          <li>
+            <code>process.nextTick()</code> runs immediately after the current
+            operation completes.
+          </li>
+          <li>
+            The poll phase decides when to execute I/O tasks and their
+            callbacks.
+          </li>
+          <li>
+            <code>setImmediate()</code> runs after I/O events in the current
+            loop iteration (after poll).
+          </li>
+        </ul>
+        <div class="callout">
+          <code>process.nextTick()</code> runs right after the current
+          operation. <code>setImmediate()</code> waits until after the current
+          event-loop phase (poll). They are not interchangeable.
+        </div>
+      </section>
+
+      <section id="code">
+        <h2>Code</h2>
+        <p>Create a file named <code>eventLoop.js</code>:</p>
+        <pre><code>console.log('Start');
+
+process.nextTick(() => {
+  console.log('Next Tick');
+});
+
+setImmediate(() => {
+  console.log('Set Immediate');
+});
+
+console.log('End');</code></pre>
+        <p>
+          The <code>process.nextTick</code> callback runs right after the
+          current script (<code>Start</code> and <code>End</code>), even before
+          <code>setImmediate</code>, which waits until the next cycle of the
+          event loop.
+        </p>
+
+        <h3>Use case: keep heavy work from blocking</h3>
+        <p>
+          For long-running synchronous computations, break the work into smaller
+          chunks and schedule them with <code>process.nextTick</code>. That
+          keeps the event loop responsive.
+        </p>
+
+        <div class="two-col">
+          <div>
+            <h3>Unoptimised</h3>
+            <pre><code>function heavyComputation(iterations, callback) {
+  let count = 0;
+  function compute() {
+    for (let i = 0; i &lt; iterations; i++) {
+      count++;
+      if (count &gt;= iterations) {
+        callback();
+        return;
+      }
+    }
+  }
+  compute();
+}
+
+heavyComputation(10000, () => {
+  console.log('Heavy computation complete');
+});</code></pre>
+          </div>
+          <div>
+            <h3>Optimised</h3>
+            <pre><code>function heavyComputation(iterations, callback) {
+  let count = 0;
+  function compute() {
+    for (let i = 0; i &lt; 1000; i++) {
+      if (++count &gt;= iterations) {
+        callback();
+        return;
+      }
+    }
+    process.nextTick(compute);
+  }
+  compute();
+}
+
+heavyComputation(10000, () => {
+  console.log('Heavy computation complete');
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <h2>Features of the event loop</h2>
+        <ul>
+          <li>
+            <strong>Continuous loop</strong> — it keeps checking for async
+            tasks, processing them, and waiting for more. That is Node's
+            non-blocking model.
+          </li>
+          <li>
+            <strong>Call stack and event queue</strong> — callbacks run only
+            when the call stack is empty.
+          </li>
+          <li>
+            <strong>Asynchronous handling</strong> — I/O, timers, callbacks,
+            promises, and async/await all go through the loop so many tasks can
+            run without blocking the main thread.
+          </li>
+          <li>
+            <strong>FIFO</strong> — the oldest task in a given queue runs
+            first.
+          </li>
+          <li>
+            <strong>Built on libuv</strong> — libuv provides I/O and hides OS
+            differences.
+          </li>
+        </ul>
+
+        <h3>Phases</h3>
+        <ul>
+          <li>
+            <strong>Timers</strong> — <code>setTimeout()</code> and
+            <code>setInterval()</code>
+          </li>
+          <li>
+            <strong>I/O / pending callbacks</strong> — almost all I/O callbacks
+            except timers and <code>setImmediate</code>
+          </li>
+          <li>
+            <strong>Poll</strong> — retrieve new I/O events and run I/O
+            callbacks
+          </li>
+          <li>
+            <strong>Check</strong> — <code>setImmediate()</code>
+          </li>
+          <li>
+            <strong>Close callbacks</strong> — for example
+            <code>socket.on('close', ...)</code>
+          </li>
+        </ul>
+      </section>
+
+      <section id="scaling">
+        <h2>Scaling Node.js applications</h2>
+
+        <h3>Cloning with the cluster module</h3>
+        <p>
+          Cluster is a core Node feature. It runs multiple worker processes that
+          share the same server port and spread incoming requests across CPU
+          cores.
+        </p>
+        <p>
+          Each process is independent. Inter-process communication (IPC) passes
+          messages and server handles between the main process and children.
+          Two load-distribution strategies:
+        </p>
+        <ul>
+          <li>
+            The main process listens on a port, accepts connections, and assigns
+            them to children in round-robin fashion.
+          </li>
+          <li>
+            The main process delegates the port so a child listens directly.
+          </li>
+        </ul>
+
+        <h3>Decomposing into microservices</h3>
+        <p>
+          Split the app into smaller independent services so different parts can
+          be scaled on their own.
+        </p>
+
+        <h3>Cluster vs child processes</h3>
+        <ul>
+          <li>
+            <strong>Cluster</strong> — spawn multiple Node processes and share
+            load across CPU cores. Shared state is not direct; use IPC.
+          </li>
+          <li>
+            <strong>Child process</strong> — run system commands, talk to other
+            apps, or handle heavy work (for example large files) without
+            blocking the event loop.
+          </li>
+        </ul>
+        <p>Child process methods:</p>
+        <ul>
+          <li>
+            <code>spawn</code> — launch a command and stream output. Good for
+            long-running processes.
+          </li>
+          <li>
+            <code>exec</code> — run a command in a shell and buffer the output.
+            Best for small output.
+          </li>
+          <li>
+            <code>fork</code> — a special <code>spawn</code> for new Node
+            processes. Use it for workers that share the same codebase.
+          </li>
+        </ul>
+
+        <h3>Cluster example</h3>
+        <pre><code>const cluster = require("cluster");
+const http = require("http");
+const os = require("os");
+
+const numCPUs = os.cpus().length;
+
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+
+  for (let i = 0; i &lt; numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid} died. Forking a new worker...`);
+    cluster.fork();
+  });
+} else {
+  http
+    .createServer((req, res) => {
+      res.writeHead(200);
+      res.end(`Hello from Worker ${process.pid}\n`);
+    })
+    .listen(8080);
+
+  console.log(`Worker ${process.pid} started`);
+}</code></pre>
+
+        <ul>
+          <li>
+            <strong>Master process</strong> — forks one worker per CPU core and
+            replaces a worker if it dies.
+          </li>
+          <li>
+            <strong>Worker processes</strong> — independent Node processes
+            sharing port 8080. Incoming requests are handled by one of the
+            workers (you can see which from the process id).
+          </li>
+        </ul>
+
+        <div class="callout">
+          Benefits: more concurrent requests by using all CPU cores, and better
+          fault tolerance because a crashed worker is replaced automatically.
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
