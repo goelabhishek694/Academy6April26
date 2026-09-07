@@ -33,19 +33,26 @@ const {exec} = require('child_process');
 
 //------------------------->execFile<-------------------------------->
 
-const {execFile} = require('child_process');
-// The path to the script file
-const scriptPath = './script.sh'; // Use 'script.bat' for Windows
+// const {execFile} = require('child_process');
+// // The path to the script file
+// const scriptPath = './script.sh'; // Use 'script.bat' for Windows
 
-// Arguments to pass to the script
-const args = ['arg1', 'arg2'];
+// // Arguments to pass to the script
+// const args = ['arg1', 'arg2'];
 
-// Executing the script with arguments
-execFile(scriptPath, args, (error, stdout, stderr) => {
-   if (error) {
-       console.error(`Execution error: ${error}`);
-       return;
-   }
-   console.log(`stdout: ${stdout}`);
-   console.error(`stderr: ${stderr}`);
-});
+// // Executing the script with arguments
+// execFile(scriptPath, args, (error, stdout, stderr) => {
+//    if (error) {
+//        console.error(`Execution error: ${error}`);
+//        return;
+//    }
+//    console.log(`stdout: ${stdout}`);
+//    console.error(`stderr: ${stderr}`);
+// });
+
+
+//------------------------->spawn<-------------------------------->
+
+
+
+//--------------------------------->fork<-------------------------------->

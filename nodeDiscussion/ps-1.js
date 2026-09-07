@@ -6,10 +6,12 @@ const fs = require("fs");
 const server = http.createServer();
 
 server.on("request",(req,res)=>{
-    fs.readFile("random.txt",(err,data)=>{
-        if(err) throw err;
-        res.end(data);
-    });
+    // fs.readFile("random.txt",(err,data)=>{
+    //     if(err) throw err;
+    //     res.end(data);
+    // });
+    const readStream = fs.createReadStream("random.txt");
+    readStream.pipe(res);
 });
 server.listen(3000,()=>{
     console.log("Server is running on port 3000");
